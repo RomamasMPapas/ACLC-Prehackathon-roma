@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar | Create account</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="brand-panel" aria-label="Northstar introduction">
+      <div class="brand-mark" aria-hidden="true">N</div>
+      <p class="eyebrow">NORTHSTAR / WORKSPACE</p>
+      <h1>Give your ideas somewhere to go.</h1>
+      <p class="brand-copy">Create a calm, focused place for your team to turn good ideas into meaningful progress.</p>
+      <div class="signal" aria-hidden="true">
+        <span class="signal-dot"></span>
+        <span>All systems in sync</span>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <div class="form-wrap">
+        <div class="mobile-mark brand-mark" aria-hidden="true">N</div>
+        <p class="form-kicker">GET STARTED</p>
+        <h2>Create your account</h2>
+        <p class="subtitle">Set up your Northstar workspace in a minute.</p>
+
+        <form id="register-form" novalidate>
+          <div class="field-group">
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" autocomplete="username" placeholder="Choose a username" required minlength="3">
+            <span class="error-message" id="username-error" role="alert"></span>
+          </div>
+
+          <div class="field-group">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+            <span class="error-message" id="email-error" role="alert"></span>
+          </div>
+
+          <div class="field-group">
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input id="password" name="password" type="password" autocomplete="new-password" placeholder="Create a strong password" required>
+              <button class="password-toggle" type="button" aria-label="Show password">Show</button>
+            </div>
+            <span class="error-message" id="password-error" role="alert"></span>
+          </div>
+
+          <div class="field-group">
+            <label for="confirm-password">Confirm password</label>
+            <div class="password-wrap">
+              <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="Repeat your password" required>
+              <button class="password-toggle" type="button" aria-label="Show password">Show</button>
+            </div>
+            <span class="error-message" id="confirm-password-error" role="alert"></span>
+          </div>
+
+          <button class="captcha" id="captcha" type="button" aria-pressed="false">
+            <span class="captcha-check" aria-hidden="true"></span>
+            <span class="captcha-copy"><strong>I'm not a robot</strong><small id="captcha-status">Click to verify</small></span>
+            <span class="captcha-badge" aria-hidden="true">N</span>
+          </button>
+          <span class="error-message captcha-error" id="captcha-error" role="alert"></span>
+
+          <button class="submit-button" type="submit">
+            <span id="submit-label">Create account</span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="signup-prompt">Already have an account? <a href="index.html">Sign in</a></p>
+      </div>
+      <p class="legal">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

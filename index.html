@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar | Sign in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="auth-shell">
+    <section class="brand-panel" aria-label="Northstar introduction">
+      <div class="brand-mark" aria-hidden="true">N</div>
+      <p class="eyebrow">NORTHSTAR / WORKSPACE</p>
+      <h1>Make room for your best work.</h1>
+      <p class="brand-copy">A calm, focused place for teams to turn good ideas into meaningful progress.</p>
+      <div class="signal" aria-hidden="true">
+        <span class="signal-dot"></span>
+        <span>All systems in sync</span>
+      </div>
+    </section>
+
+    <section class="form-panel">
+      <div class="form-wrap">
+        <div class="mobile-mark brand-mark" aria-hidden="true">N</div>
+        <p class="form-kicker">WELCOME BACK</p>
+        <h2>Sign in to Northstar</h2>
+        <p class="subtitle">Pick up right where you left off.</p>
+
+        <form id="login-form" novalidate>
+          <div class="field-group">
+            <label for="email">Work email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required>
+            <span class="error-message" id="email-error" role="alert"></span>
+          </div>
+
+          <div class="field-group">
+            <div class="label-row">
+              <label for="password">Password</label>
+              <a href="#" id="forgot-link">Forgot password?</a>
+            </div>
+            <div class="password-wrap">
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required minlength="6">
+              <button class="password-toggle" id="password-toggle" type="button" aria-label="Show password">Show</button>
+            </div>
+            <span class="error-message" id="password-error" role="alert"></span>
+          </div>
+
+          <label class="remember-row">
+            <input type="checkbox" id="remember" name="remember">
+            <span class="checkbox" aria-hidden="true"></span>
+            <span>Keep me signed in</span>
+          </label>
+
+          <button class="submit-button" type="submit">
+            <span id="submit-label">Sign in</span>
+            <span class="arrow" aria-hidden="true">&rarr;</span>
+          </button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="signup-prompt">New to Northstar? <a href="register.html">Create an account</a></p>
+      </div>
+      <p class="legal">By continuing, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

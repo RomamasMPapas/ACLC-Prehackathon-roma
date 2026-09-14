@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Northstar | Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="home-page">
+  <main class="home-shell">
+    <div class="home-header">
+      <div class="brand-mark" aria-hidden="true">N</div>
+      <a class="sign-out" href="index.html" id="sign-out">Sign out</a>
+    </div>
+    <section class="todo-panel" aria-labelledby="welcome-title">
+      <p class="form-kicker">NORTHSTAR / HOME</p>
+      <div class="todo-heading">
+        <div>
+          <h1 id="welcome-title">WELCOME <span id="role-title">USER</span></h1>
+          <p class="todo-subtitle">Turn today&apos;s intentions into progress.</p>
+        </div>
+        <span class="task-count" id="task-count">0 tasks</span>
+      </div>
+
+      <form class="task-form" id="task-form">
+        <label class="sr-only" for="task-input">Add a task</label>
+        <input id="task-input" type="text" placeholder="What needs doing?" maxlength="120" autocomplete="off" required>
+        <label class="sr-only" for="task-priority">Task priority</label>
+        <select id="task-priority" aria-label="Task priority">
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="low">Low</option>
+        </select>
+        <button type="submit" aria-label="Add task">Add <span aria-hidden="true">+</span></button>
+      </form>
+
+      <div class="board" id="task-board" aria-live="polite">
+        <section class="board-column" data-status="todo">
+          <div class="column-heading"><h2>To do</h2><span class="column-count">0</span></div>
+          <ul class="task-list" id="todo-list"></ul>
+        </section>
+        <section class="board-column" data-status="in-progress">
+          <div class="column-heading"><h2>In progress</h2><span class="column-count">0</span></div>
+          <ul class="task-list" id="in-progress-list"></ul>
+        </section>
+        <section class="board-column" data-status="done">
+          <div class="column-heading"><h2>Done</h2><span class="column-count">0</span></div>
+          <ul class="task-list" id="done-list"></ul>
+        </section>
+      </div>
+      <p class="empty-state" id="empty-state">Your board is clear. Add the first thing you want to get done.</p>
+    </section>
+  </main>
+  <script>
+    const role = sessionStorage.getItem("northstarRole");
+    if (role !== "admin" && role !== "user") {
+      window.location.replace("index.html");
+    } else {
+      document.querySelector("#role-title").textContent = role.toUpperCase();
+    }
+
+    document.querySelector("#sign-out").addEventListener("click", () => {
+      sessionStorage.removeItem("northstarRole");
+    });
+
+    const taskForm = document.querySelector("#task-form");
+    const taskInput = document.querySelector("#task-input");
+    const taskLists = {
+      todo: document.querySelector("#todo-list"),
+      "in-progress": document.querySelector("#in-progress-list"),
+      done: document.querySelector("#done-list")
+    };
+    const taskCount = document.querySelector("#task-count");
+    const emptyState = document.querySelector("#empty-state");
+    const storageKey = `northstarTasks-${role}`;
+    let tasks = JSON.parse(localStorage.getItem(storageKey) || "[]").map((task) => ({
+      ...task,
+      status: task.status || (task.done ? "done" : "todo"),
+      priority: task.priority || "medium"
+    }));
+
+    const priorityLabels = { low: "Low", medium: "Medium", high: "High" };
+    const nextStatus = { todo: "in-progress", "in-progress": "done", done: "todo" };
+
+    function renderTasks() {
+      Object.values(taskLists).forEach((list) => list.replaceChildren());
+      tasks.forEach((task) => {
+        const item = document.createElement("li");
+        item.className = "task-item";
+        item.innerHTML = `<div class="task-card-top"><span class="task-key">NS-${String(task.id).slice(-4)}</span><button class="task-delete" type="button" aria-label="Delete task">&times;</button></div><span class="task-text"></span><div class="task-card-bottom"><span class="priority priority-${task.priority}">${priorityLabels[task.priority]}</span><button class="task-move" type="button">Move to <span class="move-label"></span></button></div>`;
+        item.querySelector(".task-text").textContent = task.text;
+        item.querySelector(".move-label").textContent = nextStatus[task.status].replace("in-progress", "In progress").replace("todo", "To do").replace("done", "Done");
+        item.querySelector(".task-move").addEventListener("click", () => {
+          task.status = nextStatus[task.status];
+          saveTasks();
+        });
+        item.querySelector(".task-delete").addEventListener("click", () => {
+          tasks = tasks.filter((candidate) => candidate.id !== task.id);
+          saveTasks();
+        });
+        taskLists[task.status].append(item);
+      });
+      const remaining = tasks.filter((task) => task.status !== "done").length;
+      taskCount.textContent = `${remaining} open ${remaining === 1 ? "task" : "tasks"}`;
+      document.querySelectorAll(".board-column").forEach((column) => {
+        const status = column.dataset.status;
+        column.querySelector(".column-count").textContent = tasks.filter((task) => task.status === status).length;
+      });
+      emptyState.hidden = tasks.length > 0;
+    }
+
+    function saveTasks() {
+      localStorage.setItem(storageKey, JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    taskForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const text = taskInput.value.trim();
+      if (!text) return;
+      tasks.push({ id: Date.now(), text, status: "todo", priority: document.querySelector("#task-priority").value });
+      taskInput.value = "";
+      saveTasks();
+      taskInput.focus();
+    });
+
+    renderTasks();
+  </script>
+</body>
+</html>
